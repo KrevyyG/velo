@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test("deve connsultar um pedido aprovado", async ({ page }) => {
+test("deve consultar um pedido aprovado", async ({ page }) => {
   await page.goto("http://localhost:5173/")
   await expect(page.getByTestId("hero-section").getByRole("heading")).toContainText("Velô Sprint")
   await page.getByRole("link", { name: "Consultar Pedido" }).click()
