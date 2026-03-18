@@ -3,6 +3,9 @@ import { test, expect } from "@playwright/test";
 ///AAA - Arrange, Act, Assert
 
 test("deve consultar um pedido aprovado", async ({ page }) => {
+  //Test Data
+  const order = "VLO-ZET8T5"
+
   // Arrange
   await page.goto("http://localhost:5173/")
   await expect(page.getByTestId("hero-section").getByRole("heading")).toContainText("Velô Sprint")
@@ -10,10 +13,11 @@ test("deve consultar um pedido aprovado", async ({ page }) => {
   await expect(page.getByRole("heading")).toContainText("Consultar Pedido")
   
   // Act
-  await page.getByTestId("search-order-id").fill("VLO-ZET8T5")
+  await page.getByTestId("search-order-id").fill(order)
   await page.getByRole('button', { name: 'Buscar Pedido' }).click()
 
   // Assert
-  await expect(page.locator('//p[text()="VLO-ZET8T5"]')).toBeVisible()
+  const orderCode = page.locator(`//p[text()="Pedido"]/..//p[text()="${order}"]`)
+  await expect(orderCode).toBeVisible()
   await expect(page.locator('//div[text()="APROVADO"]')).toBeVisible()
 })
