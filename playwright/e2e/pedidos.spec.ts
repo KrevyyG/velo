@@ -11,9 +11,9 @@ test("deve consultar um pedido aprovado", async ({ page }) => {
   
   // Act
   await page.getByTestId("search-order-id").fill("VLO-ZET8T5")
-  await page.getByTestId('search-order-button').click()
+  await page.getByRole('button', { name: 'Buscar Pedido' }).click()
 
   // Assert
-  await expect(page.getByTestId('order-result-id')).toContainText('VLO-ZET8T5')
-  await expect(page.getByTestId('order-result-status')).toContainText('APROVADO')
+  await expect(page.locator('//p[text()="VLO-ZET8T5"]')).toBeVisible()
+  await expect(page.locator('//div[text()="APROVADO"]')).toBeVisible()
 })
