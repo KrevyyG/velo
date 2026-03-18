@@ -12,7 +12,11 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  // timeout: 5000,
+  timeout: 60000, //Tempo máximo para cada execução de test 
+  expect: {
+    timeout: 5000, //Tempo máximo para cada assertion
+  },
+
   testDir: './playwright/e2e',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -31,6 +35,9 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+
+    actionTimeout: 0, //Tempo máximo para cada ação interativa do browser, quando valor for 0, herda o timeout do teste
+    navigationTimeout: 0, //Tempo máximo para cada navegação do browser, quando valor for 0, herda o timeout do teste
   },
 
   /* Configure projects for major browsers */
