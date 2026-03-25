@@ -32,8 +32,9 @@ test.describe("Consultar Pedido", () => {
       - img
       - paragraph: Pedido
       - paragraph: ${order.number}
-      - img
-      - text: ${order.status}
+      - status:
+        - img
+        - text: ${order.status}
       `)
 
     await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
@@ -59,6 +60,14 @@ test.describe("Consultar Pedido", () => {
       - paragraph: À Vista
       - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
       `)
+
+    const statusBadge = page.getByRole('status').filter({ hasText: order.status })
+
+    await expect(statusBadge).toHaveClass(/bg-green-100 text-green-700/)
+
+    const statusIcon = statusBadge.locator('svg')
+
+    await expect(statusIcon).toHaveClass(/lucide-circle-check-big/)
   })
 
   test("deve consultar um pedido reprovado", async ({ page }) => {
@@ -81,8 +90,9 @@ test.describe("Consultar Pedido", () => {
       - img
       - paragraph: Pedido
       - paragraph: ${order.number}
-      - img
-      - text: ${order.status}
+      - status:
+        - img
+        - text: ${order.status}
       `)
 
     await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
@@ -108,6 +118,14 @@ test.describe("Consultar Pedido", () => {
       - paragraph: À Vista
       - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
       `)
+
+    const statusBadge = page.getByRole('status').filter({ hasText: order.status })
+
+    await expect(statusBadge).toHaveClass(/bg-red-100 text-red-700/)
+
+    const statusIcon = statusBadge.locator('svg')
+
+    await expect(statusIcon).toHaveClass(/lucide-circle-x/)
   })
 
   test("deve consultar um pedido em análise", async ({ page }) => {
@@ -130,8 +148,9 @@ test.describe("Consultar Pedido", () => {
       - img
       - paragraph: Pedido
       - paragraph: ${order.number}
-      - img
-      - text: ${order.status}
+      - status:
+        - img
+        - text: EM ANÁLISE
       `)
 
     await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
@@ -157,6 +176,14 @@ test.describe("Consultar Pedido", () => {
       - paragraph: À Vista
       - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
       `)
+
+    const statusBadge = page.getByRole('status').filter({ hasText: 'EM ANÁLISE' })
+
+    await expect(statusBadge).toHaveClass(/bg-amber-100 text-amber-700/)
+
+    const statusIcon = statusBadge.locator('svg')
+
+    await expect(statusIcon).toHaveClass(/lucide-clock/)
   })
 
   test("deve consultar um pedido inexistente", async ({ page }) => {
