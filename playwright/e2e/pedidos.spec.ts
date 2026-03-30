@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { gerarCodigoPedido, consultarPedido } from "../support/helpers";
+import { gerarCodigoPedido, consultarPedido, validarBadge } from "../support/helpers";
 
 ///AAA - Arrange, Act, Assert
 
@@ -60,13 +60,7 @@ test.describe("Consultar Pedido", () => {
       - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
       `)
 
-    const statusBadge = page.getByRole('status').filter({ hasText: order.status })
-
-    await expect(statusBadge).toHaveClass(/bg-green-100 text-green-700/)
-
-    const statusIcon = statusBadge.locator('svg')
-
-    await expect(statusIcon).toHaveClass(/lucide-circle-check-big/)
+    await validarBadge(page, order.status, /bg-green-100 text-green-700/, /lucide-circle-check-big/)
   })
 
   test("deve consultar um pedido reprovado", async ({ page }) => {
@@ -117,20 +111,14 @@ test.describe("Consultar Pedido", () => {
       - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
       `)
 
-    const statusBadge = page.getByRole('status').filter({ hasText: order.status })
-
-    await expect(statusBadge).toHaveClass(/bg-red-100 text-red-700/)
-
-    const statusIcon = statusBadge.locator('svg')
-
-    await expect(statusIcon).toHaveClass(/lucide-circle-x/)
+    await validarBadge(page, order.status, /bg-red-100 text-red-700/, /lucide-circle-x/)
   })
 
   test("deve consultar um pedido em análise", async ({ page }) => {
     //Test Data
     const order = {
       number: "VLO-AWGCM4",
-      status: "EM_ANALISE",
+      status: "EM ANÁLISE",
       color: "Lunar White",
       wheelType: "aero Wheels",
       customerName: "João da Silva",
@@ -174,13 +162,7 @@ test.describe("Consultar Pedido", () => {
       - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
       `)
 
-    const statusBadge = page.getByRole('status').filter({ hasText: 'EM ANÁLISE' })
-
-    await expect(statusBadge).toHaveClass(/bg-amber-100 text-amber-700/)
-
-    const statusIcon = statusBadge.locator('svg')
-
-    await expect(statusIcon).toHaveClass(/lucide-clock/)
+    await validarBadge(page, order.status, /bg-amber-100 text-amber-700/, /lucide-clock/)
   })
 
   test("deve consultar um pedido inexistente", async ({ page }) => {

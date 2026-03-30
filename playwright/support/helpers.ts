@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test'
+import { Page, expect } from '@playwright/test'
 
 export function gerarCodigoPedido(prefixo) {
     const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -23,7 +23,15 @@ export function gerarCodigoPedido(prefixo) {
     // Retorna o código formatado
     return `${parte1}-${parte2}`;
 }
+
 export async function consultarPedido(page: Page, orderNumber: string) {
   await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(orderNumber)
   await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+}
+
+export async function validarBadge(page: Page, status: string, orderClass: RegExp, orderIcon: RegExp) {
+  const statusBadge = page.getByRole('status').filter({ hasText: status })
+  await expect(statusBadge).toHaveClass(orderClass)
+  const statusIcon = statusBadge.locator('svg')
+  await expect(statusIcon).toHaveClass(orderIcon)
 }
