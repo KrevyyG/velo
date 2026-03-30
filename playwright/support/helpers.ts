@@ -1,3 +1,5 @@
+import { Page } from '@playwright/test'
+
 export function gerarCodigoPedido(prefixo) {
     const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const alfanumericos = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -21,4 +23,7 @@ export function gerarCodigoPedido(prefixo) {
     // Retorna o código formatado
     return `${parte1}-${parte2}`;
 }
-
+export async function consultarPedido(page: Page, orderNumber: string) {
+  await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(orderNumber)
+  await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+}

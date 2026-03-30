@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { gerarCodigoPedido } from "../support/helpers";
+import { gerarCodigoPedido, consultarPedido } from "../support/helpers";
 
 ///AAA - Arrange, Act, Assert
 
@@ -24,8 +24,7 @@ test.describe("Consultar Pedido", () => {
     }
 
     // Act
-    await page.getByTestId("search-order-id").fill(order.number)
-    await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+    await consultarPedido(page, order.number)
 
     // Assert
     await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
@@ -82,8 +81,7 @@ test.describe("Consultar Pedido", () => {
     }
 
     // Act
-    await page.getByTestId("search-order-id").fill(order.number)
-    await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+    await consultarPedido(page, order.number)
 
     // Assert
     await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
@@ -140,8 +138,7 @@ test.describe("Consultar Pedido", () => {
     }
 
     // Act
-    await page.getByTestId("search-order-id").fill(order.number)
-    await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+    await consultarPedido(page, order.number)
 
     // Assert
     await expect(page.getByTestId(`order-result-${order.number}`)).toMatchAriaSnapshot(`
@@ -191,8 +188,7 @@ test.describe("Consultar Pedido", () => {
     const order = gerarCodigoPedido("VLO")
 
     // Act
-    await page.getByTestId("search-order-id").fill(order)
-    await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+    await consultarPedido(page, order)
 
     // Assert
     await expect(page.locator('#root')).toMatchAriaSnapshot(`
